@@ -1,9 +1,12 @@
 from flask import Flask, request, jsonify
 import requests
 import pandas as pd
+import os
 
-app = Flask(__name__)
-
+if __name__ == '__main__':
+    port = int(os.environ.get("PORT", 5000))
+    app.run(host='0.0.0.0', port=port, debug=True)
+    
 def fetch_ohlcv(symbol, interval):
     url = f'https://api.binance.com/api/v3/klines?symbol={symbol}&interval={interval}&limit=500'
     response = requests.get(url)
