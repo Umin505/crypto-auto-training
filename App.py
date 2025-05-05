@@ -77,10 +77,6 @@ def index():
 def charts():
     return render_template('chart.html')  # 指向 templates/chart.html
 
-@app.route('/charts')
-def charts():
-    return render_template('chart.html')
-
 if __name__ == '__main__':
     port = int(os.environ.get("PORT", 5000))
     app.run(host='0.0.0.0', port=port, debug=True)
