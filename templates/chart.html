@@ -14,7 +14,7 @@
     <div class="row">
       <div class="col">
         <!-- 圖表 Canvas -->
-        <canvas id="chart"></canvas>
+        <canvas id="chart" style="height: 400px;"></canvas>
       </div>
     </div>
   </div>
@@ -24,36 +24,49 @@
     fetch('/analyze')
       .then(response => response.json())
       .then(data => {
-        // 假設 data 包含 timestamps、price、MACD、RSI 等陣列
         const ctx = document.getElementById('chart').getContext('2d');
         new Chart(ctx, {
           type: 'line',
           data: {
-            labels: data.timestamps,   // 時間軸
+            labels: data.time,  // ✅ 對應 Flask 回傳欄位
             datasets: [
               {
                 label: '價格',
-                data: data.price,
+                data: data.close,  // ✅ 對應 Flask 回傳欄位
                 borderColor: 'blue',
                 borderWidth: 1,
                 fill: false
               },
               {
                 label: 'MACD',
-                data: data.MACD,
+                data: data.macd,  // ✅ 對應 Flask 回傳欄位
                 borderColor: 'red',
                 borderWidth: 1,
                 fill: false
               }
-              // 可加入 RSI、ATR 等其他指標作為額外 datasets
+              // 你可以加入 RSI、ATR 等資料集
+              // {
+              //   label: 'RSI',
+              //   data: data.rsi,
+              //   borderColor: 'green',
+              //   borderWidth: 1,
+              //   fill: false
+              // }
             ]
           },
           options: {
-            responsive: true,           // 啟用響應式自動調整:contentReference[oaicite:1]{index=1}
-            maintainAspectRatio: false, // 允許高度自適應父容器:contentReference[oaicite:2]{index=2}
+            responsive: true,
+            maintainAspectRatio: false,
             scales: {
-              x: { type: 'time', time: { tooltipFormat: 'YYYY-MM-DD HH:mm' } },
-              y: { beginAtZero: false }
+              x: {
+                type: 'time',
+                time: {
+                  tooltipFormat: 'YYYY-MM-DD HH:mm'
+                }
+              },
+              y: {
+                beginAtZero: false
+              }
             }
           }
         });
