@@ -1,9 +1,9 @@
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, render_template
 import requests
 import pandas as pd
 import os
 
-app = Flask(__name__)  # ← 這行很重要！Flask 物件初始化
+app = Flask(__name__)  # 只要這一個就夠
 
 def fetch_ohlcv(symbol, interval):
     url = f'https://api.binance.com/api/v3/klines?symbol={symbol}&interval={interval}&limit=500'
@@ -72,6 +72,10 @@ def analyze():
 @app.route('/')
 def index():
     return "Crypto Technical Analysis API"
+
+@app.route('/charts')
+def charts():
+    return render_template('chart.html')  # 指向 templates/chart.html
 
 if __name__ == '__main__':
     port = int(os.environ.get("PORT", 5000))
